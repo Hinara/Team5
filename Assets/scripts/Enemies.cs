@@ -89,7 +89,6 @@ public class Enemies : MonoBehaviour {
     void updatePosition()
     {
         float pos = this.position / 1000.0f;
-        pos *= 5.0f;
         float x;
         float y;
         x = 0.0f;
