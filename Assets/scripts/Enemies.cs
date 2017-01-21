@@ -11,15 +11,17 @@ public class Enemies : MonoBehaviour {
     [Tooltip("Speed of the enemy.")]
     public float speed;
 
-    [Tooltip("Efficiency of the water slow.")]
-    public float water_efficiency;
     [Tooltip("Efficiency of the fire damage")]
     public float lava_efficiency;
+    [Tooltip("Efficiency of the water slow.")]
+    public float water_efficiency;
     [Tooltip("Efficiency of electricity damage.")]
     public float electricity_efficiency;
+    [Tooltip("Efficiency of a wind blow")]
+    public float wind_efficiency;
     [Tooltip("Efficiency of laser damage.")]
     public float laser_efficiency;
-    [Tooltip("Maximal duration of a stun on this enemie")]
+    [Tooltip("Maximal duration of a stun on this enemy")]
     public float maxStunDuration;
     [Tooltip("Gold Dropped by the ennemy")]
     public float goldDropped;
