@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -10,9 +12,15 @@ public class PlayerController : MonoBehaviour {
     public GameObject electricTurret;
     public GameObject windTurret;
 
-    private Vector2 pos = new Vector2(0, 0);
+    public Slider life;
+    public Text money;
 
-    private Vector2 org;
+    public float gold = 100;
+    public float maxHp = 1000.0f;
+
+    private float hp;
+
+    private Vector2 pos = new Vector2(0, 0);
 
     protected int[][] tab = new int[52][] {
     new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
@@ -70,77 +78,57 @@ public class PlayerController : MonoBehaviour {
     };
     // Use this for initialization
     void Start () {
-        org = transform.position;
+        hp = maxHp;
     }
 	
-    void displayCase()
-    {
-        switch (tab[(int) this.pos.y][(int) this.pos.x])
-        {
-            case 0:
-                print("Sand");
-                break;
-            case 1:
-                print("Water");
-                break;
-            case 2:
-                print("Grass");
-                break;
-            case 3:
-                print("Nothing");
-                break;
-            case 4:
-                print("Castle");
-                break;
-            case 5:
-                print("Path");
-                break;
-            default:
-                print("Unknown");
-                break;
-        }
-    }
-
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Turret1"))
+        if (gold >= 100.0f)
         {
-            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            if (Input.GetButtonDown("Turret1"))
             {
-                tab[(int)this.pos.y][(int)this.pos.x] += 8;
-                Instantiate(fireTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(fireTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
             }
-        }
-        if (Input.GetButtonDown("Turret2"))
-        {
-            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            if (Input.GetButtonDown("Turret2"))
             {
-                tab[(int)this.pos.y][(int)this.pos.x] += 8;
-                Instantiate(waterTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(waterTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
             }
-        }
-        if (Input.GetButtonDown("Turret3"))
-        {
-            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            if (Input.GetButtonDown("Turret3"))
             {
-                tab[(int)this.pos.y][(int)this.pos.x] += 8;
-                Instantiate(windTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(windTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
             }
-        }
-        if (Input.GetButtonDown("Turret4"))
-        {
-            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            if (Input.GetButtonDown("Turret4"))
             {
-                tab[(int)this.pos.y][(int)this.pos.x] += 8;
-                Instantiate(electricTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(electricTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
             }
-        }
-        if (Input.GetButtonDown("Turret5"))
-        {
-            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            if (Input.GetButtonDown("Turret5"))
             {
-                tab[(int)this.pos.y][(int)this.pos.x] += 8;
-                Instantiate(lightTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(lightTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
             }
         }
         if (Input.GetButtonDown("Right"))
@@ -151,7 +139,6 @@ public class PlayerController : MonoBehaviour {
                 {
                     pos.y += 1;
                     transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y - 0.5f);
-                    displayCase();
                 }
             }
             else
@@ -161,7 +148,6 @@ public class PlayerController : MonoBehaviour {
                     pos.y -= 1;
                     pos.x += 1;
                     transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y + 0.5f);
-                    displayCase();
                 }
             }
         }
@@ -173,7 +159,6 @@ public class PlayerController : MonoBehaviour {
                 {
                     pos.y -= 1;
                     transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y + 0.5f);
-                    displayCase();
                 }
             }
             else
@@ -183,7 +168,6 @@ public class PlayerController : MonoBehaviour {
                     pos.y += 1;
                     pos.x -= 1;
                     transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y - 0.5f);
-                    displayCase();
                 }
             }
         }
@@ -193,7 +177,6 @@ public class PlayerController : MonoBehaviour {
             {
                 pos.y -= 2;
                 transform.position = new Vector2(transform.position.x, transform.position.y + 1.0f);
-                displayCase();
             }
         }
         if (Input.GetButtonDown("Down"))
@@ -202,8 +185,46 @@ public class PlayerController : MonoBehaviour {
             {
                 pos.y += 2;
                 transform.position = new Vector2(transform.position.x, transform.position.y - 1.0f);
-                displayCase();
             }
+        }
+    }
+
+    public void addMoney(float amount)
+    {
+        this.gold += amount;
+        updateMoneyUI();
+    }
+
+    public void spendMoney(float amount)
+    {
+        this.gold -= amount;
+        updateMoneyUI();
+    }
+
+    public void updateMoneyUI()
+    {
+        if (money != null)
+        {
+            money.text = gold + "$";
+        }
+    }
+    
+    public void win()
+    {
+        print("win");
+        SceneManager.LoadScene("win");
+    }
+
+    public void takeDamage(float dmg)
+    {
+        hp -= dmg;
+        if (hp <= 0.0f)
+        {
+            SceneManager.LoadScene("win");
+        }
+        if (life != null)
+        {
+            life.value = hp / maxHp;
         }
     }
 }

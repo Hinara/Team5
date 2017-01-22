@@ -26,23 +26,32 @@ public class Enemies : MonoBehaviour {
     [Tooltip("Gold Dropped by the ennemy")]
     public float goldDropped;
 
+    [Tooltip("Spawn Rate of this ennemie")]
+    public float spawnRate;
+
+
     private float currentHp;
     private float position;
     private float fireDuration;
     private float slowDuration;
     private float stunDuration;
     private float stunCd;
+    Spawner spawn;
+    PlayerController player;
 
     // Use this for initialization
     void Start () {
         this.currentHp = this.maxHp;
         this.position = 0.0f;
+        speed *= 2.0f;
 
         this.stunCd = 0.0f;
         this.stunDuration = 0.0f;
         this.fireDuration = 0.0f;
         this.slowDuration = 0.0f;
-	}
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        spawn = GameObject.FindWithTag("Respawn").GetComponent<Spawner>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -76,7 +85,9 @@ public class Enemies : MonoBehaviour {
 
         //This part prohibit the spam of the stun
         if (stunCd > 0.0f)
+        {
             stunCd -= Time.deltaTime;
+        }
 
         //This part is the damage by fire part of the enemies
         if (fireDuration > 0.0f)
@@ -88,7 +99,7 @@ public class Enemies : MonoBehaviour {
 
     void updatePosition()
     {
-        float pos = this.position / 1000.0f;
+        float pos = this.position / 4000.0f;
         float x;
         float y;
         x = 0.0f;
@@ -213,18 +224,15 @@ public class Enemies : MonoBehaviour {
             x = 18.13f + 1.35f * (pos - 45.0f);
             y = -0.36f + 0.5f * (pos - 45.0f);
         }
-        else if (pos <= 49.0f)
-        {
-            x = 22.18f;
-            y = 1.14f + 1.0f * (pos - 48.0f);
-        }
         else
         {
-            x = 22.18f + 1.35f * (pos - 49.0f);
-            y = 2.14f + 0.5f * (pos - 49.0f);
+            player.takeDamage(this.dmg);
+            Destroy(this.gameObject);
+            return ;
         }
         transform.position = new Vector2(x, y);
     }
+
     public void stun(float duration)
     {
         if (stunCd <= 0.0f)
@@ -259,13 +267,26 @@ public class Enemies : MonoBehaviour {
         damaged(dmg * laser_efficiency);
     }
 
+    public void airSlice(float dmg)
+    {
+        damaged(dmg * wind_efficiency);
+    }
+
     void damaged(float dmg)
     {
         currentHp -= dmg;
         if (currentHp <= 0.0f)
         {
-            //TODO : Get the money dropped by the mob
             Destroy(this.gameObject);
+            if (player != null)
+            {
+                player.addMoney(this.goldDropped);
+                if (spawn != null && spawn.hasFinish() && GameObject.FindGameObjectsWithTag("Enemies").Length == 1)
+                {
+                    player.win();
+                }
+            }
+            
         }
     }
 }
