@@ -8,7 +8,8 @@ public class TurretAI : MonoBehaviour {
     protected Animator anim;
     public float shootCD;
     public float barrelHeat;
-    public float bulletSpeed;
+    //public float bulletSpeed;
+    public Bullet bullet;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -58,12 +59,10 @@ public class TurretAI : MonoBehaviour {
             {
                 rotateInDirection(target.gameObject.transform.position);
             }
-        }
-        Debug.Log("Update: " + target + "(" + currentCollisions + ")");
-        if ((barrelHeat -= Time.deltaTime) < 0.0f)
-            barrelHeat = 0.0f;
-        if (target != null)
             Attack();
+        }
+        if ((barrelHeat -= Time.deltaTime) < 0.0f)
+            barrelHeat = 0.0f;            
     }
     private void rotateInDirection(Vector3 vec)
     {
@@ -74,6 +73,7 @@ public class TurretAI : MonoBehaviour {
             degrees = 360 - degrees;
         }
         anim.SetFloat("Angle", degrees);
+    }
 
     void Attack()
     {
@@ -87,14 +87,7 @@ public class TurretAI : MonoBehaviour {
             dir = target.gameObject.transform.position - gameObject.transform.position;
             dir.Normalize();
             int idx = (int)((Vector2.Angle(Vector2.right, dir) - 30.0f) / 60.0f);
-            ex = (new Transform[6] {shootPointUpRight,
-            shootPointUp,
-            shootPointUpLeft,
-            shootPointDownLeft,
-            shootPointDown,
-            shootPointDownRight})[idx];
-            Bullet bulletClone = Instantiate(bullet, ex.transform.position, ex.transform.rotation) as Bullet;
-            bulletClone.speed = bulletSpeed;
+            Bullet bulletClone = Instantiate(bullet, transform.position, transform.rotation) as Bullet;
             bulletClone.target = target;
             /*if ((data = bulletClone.GetComponent<Bullet>()) != null)
             {

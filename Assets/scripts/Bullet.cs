@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour {
 
     public float life;
     public float speed;
-    public GameObject target;
+    public Enemies target;
 
 
 	// Use this for initialization
@@ -23,9 +23,8 @@ public class Bullet : MonoBehaviour {
             Destroy(gameObject);
         }
           
-        Vector3 dir = target.gameObject.transform.position
-            - gameObject.transform.position;
-        dir.Normalize();
+        Vector3 dir = (target.gameObject.transform.position
+            - gameObject.transform.position).normalized;
         gameObject.transform.position += dir * (speed * Time.deltaTime);
 	}
 
