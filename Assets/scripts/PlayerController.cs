@@ -1,200 +1,218 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameObject waterTurret;
+    public GameObject fireTurret;
+    public GameObject lightTurret;
+    public GameObject electricTurret;
+    public GameObject windTurret;
+
+    public Text life;
+    public Text money;
+
+    public float gold = 100;
+    public float maxHp = 1000.0f;
+
+    private float hp;
+
     private Vector2 pos = new Vector2(0, 0);
 
-    private Vector2 org;
-    private bool keyUp = false;
-    private bool keyLeft = false;
-    private bool keyRight = false;
-    private bool keyDown = false;
-
-
-    protected int[][] tab = new int[52][] { 
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {5,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {5,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4},
-    new int[19] {0,5,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,0,5,0,0,0,0,0,0,2,2,2,2,2,2,4,4,5},
-    new int[19] {0,0,5,5,5,0,0,0,0,0,2,2,2,2,2,2,4,4,5},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,5,4},
-    new int[19] {0,0,0,0,5,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,5,4},
-    new int[19] {1,0,0,0,5,0,0,0,0,0,2,2,2,2,2,2,4,5,4},
-    new int[19] {1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,5,4,4},
-    new int[19] {1,0,0,0,5,0,0,0,0,0,2,2,2,2,2,2,5,4,4},
-    new int[19] {1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,0,2,2,2,2,2,5,4,4},
-    new int[19] {1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,5,4,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,0,2,2,2,2,5,2,4,4},
-    new int[19] {1,1,0,0,0,0,0,0,0,0,2,2,2,2,5,2,4,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,0,2,2,2,5,2,2,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,2,2,2,2,2,2,2,4,4},
-    new int[19] {1,1,0,0,0,5,0,0,0,0,0,2,2,5,5,2,2,2,4},
-    new int[19] {1,1,0,0,0,5,5,5,5,0,2,2,5,5,2,2,2,2,4},
-    new int[19] {1,1,1,0,0,0,5,5,5,5,0,2,5,2,2,2,2,2,2},
-    new int[19] {1,1,0,0,0,0,0,0,0,5,5,2,2,2,2,2,2,2,4},
-    new int[19] {1,1,1,0,0,0,0,0,0,0,5,5,5,2,2,2,2,2,2},
-    new int[19] {1,1,0,0,0,0,0,0,0,0,0,5,2,2,2,2,2,2,4},
-    new int[19] {1,1,1,0,1,0,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2,4},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2}
+    protected int[][] tab = new int[52][] {
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,5},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,5,5},
+    new int[] {3,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,5,5},
+    new int[] {3,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,5,5,5},
+    new int[] {0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5,5},
+    new int[] {0,3,0,0,0,0,0,0,0,1,1,1,1,1,2,2,5,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,2,5,5,5},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,5,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5},
+    new int[] {0,0,0,3,0,0,0,0,0,0,1,1,1,1,1,1,5,5,5},
+    new int[] {0,0,3,3,3,0,0,0,0,0,1,1,1,1,1,1,2,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,5,5,2},
+    new int[] {0,0,0,0,3,0,0,0,0,0,1,1,1,1,1,1,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,3,2},
+    new int[] {4,0,0,0,3,0,0,0,0,0,1,1,1,1,1,1,2,3,2},
+    new int[] {4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,3,2,2},
+    new int[] {4,0,0,0,3,0,0,0,0,0,1,1,1,1,1,1,3,2,2},
+    new int[] {4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,0,1,1,1,1,1,3,2,2},
+    new int[] {4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,3,2,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,0,1,1,1,1,3,1,2,2},
+    new int[] {4,4,0,0,0,0,0,0,0,0,1,1,1,1,3,1,2,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,0,1,1,1,3,1,1,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,1,1,1,1,1,1,1,2,2},
+    new int[] {4,4,0,0,0,3,0,0,0,0,0,1,1,3,3,1,1,1,2},
+    new int[] {4,4,0,0,0,3,3,3,3,0,1,1,3,3,1,1,1,1,2},
+    new int[] {4,4,4,0,0,0,3,3,3,3,0,1,3,1,1,1,1,1,1},
+    new int[] {4,4,0,0,0,0,0,0,0,3,3,1,1,1,1,1,1,1,2},
+    new int[] {4,4,4,0,0,0,0,0,0,0,3,3,3,1,1,1,1,1,1},
+    new int[] {4,4,0,0,0,0,0,0,0,0,0,3,1,1,1,1,1,1,2},
+    new int[] {4,4,4,0,4,0,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1,1,2},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1}
     };
     // Use this for initialization
     void Start () {
-        org = transform.position;
+        hp = maxHp;
     }
 	
-    void displayCase()
-    {
-        switch (tab[(int) this.pos.y][(int) this.pos.x])
+	// Update is called once per frame
+	void Update () {
+        if (gold >= 100.0f)
         {
-            case 0:
-                print("Sand");
-                break;
-            case 1:
-                print("Water");
-                break;
-            case 2:
-                print("Grass");
-                break;
-            case 3:
-                print("Nothing");
-                break;
-            case 4:
-                print("Castle");
-                break;
-            case 5:
-                print("Path");
-                break;
-            default:
-                print("Unknown");
-                break;
+            if (Input.GetButtonDown("Turret1"))
+            {
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(fireTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
+            }
+            if (Input.GetButtonDown("Turret2"))
+            {
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(waterTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
+            }
+            if (Input.GetButtonDown("Turret3"))
+            {
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(windTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
+            }
+            if (Input.GetButtonDown("Turret4"))
+            {
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(electricTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
+            }
+            if (Input.GetButtonDown("Turret5"))
+            {
+                if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+                {
+                    tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                    Instantiate(lightTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+                    spendMoney(100.0f);
+                }
+            }
+        }
+        if (Input.GetButtonDown("Right"))
+        {
+            if (pos.y % 2 == 0)
+            {
+                if (pos.y + 1 < 51)
+                {
+                    pos.y += 1;
+                    transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y - 0.5f);
+                }
+            }
+            else
+            {
+                if (pos.y - 1 >= 0 && pos.x + 1 < 19)
+                {
+                    pos.y -= 1;
+                    pos.x += 1;
+                    transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y + 0.5f);
+                }
+            }
+        }
+        if (Input.GetButtonDown("Left"))
+        {
+            if (pos.y % 2 == 1)
+            {
+                if (pos.y - 1 >= 0)
+                {
+                    pos.y -= 1;
+                    transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y + 0.5f);
+                }
+            }
+            else
+            {
+                if (pos.y + 1 < 51 && pos.x - 1 >= 0.0f)
+                {
+                    pos.y += 1;
+                    pos.x -= 1;
+                    transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y - 0.5f);
+                }
+            }
+        }
+        if (Input.GetButtonDown("Up"))
+        {
+            if (pos.y - 2 >= 0)
+            {
+                pos.y -= 2;
+                transform.position = new Vector2(transform.position.x, transform.position.y + 1.0f);
+            }
+        }
+        if (Input.GetButtonDown("Down"))
+        {
+            if (pos.y + 2 < 51)
+            {
+                pos.y += 2;
+                transform.position = new Vector2(transform.position.x, transform.position.y - 1.0f);
+            }
         }
     }
 
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetAxis("Horizontal") >= 0.1f)
+    public void addMoney(float amount)
+    {
+        this.gold += amount;
+        updateMoneyUI();
+    }
+
+    public void spendMoney(float amount)
+    {
+        this.gold -= amount;
+        updateMoneyUI();
+    }
+
+    public void updateMoneyUI()
+    {
+        if (money != null)
         {
-            if (!keyRight)
-            {
-                keyRight = true;
-                if (pos.y % 2 == 0)
-                {
-                    if (pos.y + 1 < 51)
-                    {
-                        pos.y += 1;
-                        transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y - 0.5f);
-                        displayCase();
-                    }
-                }
-                else
-                {
-                    if (pos.y - 1 >= 0 && pos.x + 1 < 19)
-                    {
-                        pos.y -= 1;
-                        pos.x += 1;
-                        transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y + 0.5f);
-                        displayCase();
-                    }
-                }
-            }
+            money.text = gold + "$";
         }
-        else
+    }
+
+    public void updateLifeUI()
+    {
+        if (life != null)
         {
-            keyRight = false;
-        }
-        if (Input.GetAxis("Horizontal") <= -0.1f)
-        {
-            if (!keyLeft)
-            {
-                keyLeft = true;
-                if (pos.y % 2 == 1)
-                {
-                    if (pos.y - 1 >= 0)
-                    {
-                        pos.y -= 1;
-                        transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y + 0.5f);
-                        displayCase();
-                    }
-                }
-                else
-                {
-                    if (pos.y + 1 < 51 && pos.x - 1 >= 0.0f)
-                    {
-                        pos.y += 1;
-                        pos.x -= 1;
-                        transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y - 0.5f);
-                        displayCase();
-                    }
-                }
-            }
-        }
-        else
-        {
-            keyLeft = false;
-        }
-        if (Input.GetAxis("Vertical") >= 0.1f)
-        {
-            if (!keyUp)
-            {
-                keyUp = true;
-                if (pos.y - 2 >= 0)
-                {
-                    pos.y -= 2;
-                    transform.position = new Vector2(transform.position.x, transform.position.y + 1.0f);
-                    displayCase();
-                }
-            }
-        }
-        else
-        {
-            keyUp = false;
-        }
-        if (Input.GetAxis("Vertical") <= -0.1f)
-        {
-            if (!keyDown)
-            {
-                keyDown = true;
-                if (pos.y + 2 < 51)
-                {
-                    pos.y += 2;
-                    transform.position = new Vector2(transform.position.x, transform.position.y - 1.0f);
-                    displayCase();
-                }
-            }
-        }
-        else
-        {
-            keyDown = false;
+            life.text = hp + "/" + maxHp;
         }
     }
 }

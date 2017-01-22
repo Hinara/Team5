@@ -4,41 +4,76 @@ using UnityEngine;
 
 public class TurretAI : MonoBehaviour {
 
-    public float distance;
-    public float wakeRange;
+    protected Enemies target = null;
+    protected Animator anim;
     public float shootCD;
     public float barrelHeat;
     public float bulletSpeed;
 
-    public int rotation;
-    public int currentCollisions;
-    public Bullet bullet;
-    public GameObject target;
-    public Animator anim;
-    public Transform shootPointUpRight, shootPointUp, shootPointUpLeft;
-    public Transform shootPointDownLeft, shootPointDown, shootPointDownRight;
-
-    void Awake()
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        target = null;
-        currentCollisions = 0;
+        this.OnTriggerStay2D(collider);
     }
 
-    // Use this for initialization
-    void Start ()
+    private void OnTriggerStay2D(Collider2D collider)
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        if (target == null)
+        {
+            Enemies temp = collider.GetComponent<Enemies>();
+            if (temp != null)
+            {
+                target = temp;
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
     {
+        if (target != null)
+        {
+            Enemies temp = collision.GetComponent<Enemies>();
+            if (temp != null)
+            {
+                if (target.GetInstanceID() == temp.GetInstanceID())
+                {
+                    target = null;
+                }
+            }
+        }
+    }
+
+    private void Start()
+    {
+        anim = this.GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if (target != null)
+        {
+            if (target.gameObject == null)
+            {
+                target = null;
+            }
+            else
+            {
+                rotateInDirection(target.gameObject.transform.position);
+            }
+        }
         Debug.Log("Update: " + target + "(" + currentCollisions + ")");
         if ((barrelHeat -= Time.deltaTime) < 0.0f)
             barrelHeat = 0.0f;
         if (target != null)
             Attack();
-	}
+    }
+    private void rotateInDirection(Vector3 vec)
+    {
+        //Quaternion quat = transform.rotation;
+        float degrees = Vector3.Angle(Vector3.right, vec - transform.position);
+        if (vec.y < transform.position.y)
+        {
+            degrees = 360 - degrees;
+        }
+        anim.SetFloat("Angle", degrees);
 
     void Attack()
     {
