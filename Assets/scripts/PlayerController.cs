@@ -4,63 +4,69 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameObject waterTurret;
+    public GameObject fireTurret;
+    public GameObject lightTurret;
+    public GameObject electricTurret;
+    public GameObject windTurret;
+
     private Vector2 pos = new Vector2(0, 0);
 
     private Vector2 org;
 
-    protected int[][] tab = new int[52][] { 
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {5,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {5,0,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4},
-    new int[19] {0,5,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4,4},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,4,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,0,5,0,0,0,0,0,0,2,2,2,2,2,2,4,4,5},
-    new int[19] {0,0,5,5,5,0,0,0,0,0,2,2,2,2,2,2,4,4,5},
-    new int[19] {0,0,5,0,0,0,0,0,0,0,2,2,2,2,2,2,4,5,4},
-    new int[19] {0,0,0,0,5,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,5,4},
-    new int[19] {1,0,0,0,5,0,0,0,0,0,2,2,2,2,2,2,4,5,4},
-    new int[19] {1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,5,4,4},
-    new int[19] {1,0,0,0,5,0,0,0,0,0,2,2,2,2,2,2,5,4,4},
-    new int[19] {1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,0,2,2,2,2,2,5,4,4},
-    new int[19] {1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,5,4,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,0,2,2,2,2,5,2,4,4},
-    new int[19] {1,1,0,0,0,0,0,0,0,0,2,2,2,2,5,2,4,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,0,2,2,2,5,2,2,4,4},
-    new int[19] {1,1,0,0,5,0,0,0,0,0,2,2,2,2,2,2,2,4,4},
-    new int[19] {1,1,0,0,0,5,0,0,0,0,0,2,2,5,5,2,2,2,4},
-    new int[19] {1,1,0,0,0,5,5,5,5,0,2,2,5,5,2,2,2,2,4},
-    new int[19] {1,1,1,0,0,0,5,5,5,5,0,2,5,2,2,2,2,2,2},
-    new int[19] {1,1,0,0,0,0,0,0,0,5,5,2,2,2,2,2,2,2,4},
-    new int[19] {1,1,1,0,0,0,0,0,0,0,5,5,5,2,2,2,2,2,2},
-    new int[19] {1,1,0,0,0,0,0,0,0,0,0,5,2,2,2,2,2,2,4},
-    new int[19] {1,1,1,0,1,0,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2,4},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,2,2,2},
-    new int[19] {1,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2}
+    protected int[][] tab = new int[52][] {
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,5},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,5,5},
+    new int[] {3,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,5,5},
+    new int[] {3,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,5,5,5},
+    new int[] {0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5,5},
+    new int[] {0,3,0,0,0,0,0,0,0,1,1,1,1,1,2,2,5,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,2,5,5,5},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5},
+    new int[] {0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,5,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,2,5,5},
+    new int[] {0,0,0,3,0,0,0,0,0,0,1,1,1,1,1,1,5,5,5},
+    new int[] {0,0,3,3,3,0,0,0,0,0,1,1,1,1,1,1,2,5,5},
+    new int[] {0,0,3,0,0,0,0,0,0,0,1,1,1,1,1,1,5,5,2},
+    new int[] {0,0,0,0,3,0,0,0,0,0,1,1,1,1,1,1,2,2,2},
+    new int[] {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,3,2},
+    new int[] {4,0,0,0,3,0,0,0,0,0,1,1,1,1,1,1,2,3,2},
+    new int[] {4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,3,2,2},
+    new int[] {4,0,0,0,3,0,0,0,0,0,1,1,1,1,1,1,3,2,2},
+    new int[] {4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,0,1,1,1,1,1,3,2,2},
+    new int[] {4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,3,2,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,0,1,1,1,1,3,1,2,2},
+    new int[] {4,4,0,0,0,0,0,0,0,0,1,1,1,1,3,1,2,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,0,1,1,1,3,1,1,2,2},
+    new int[] {4,4,0,0,3,0,0,0,0,0,1,1,1,1,1,1,1,2,2},
+    new int[] {4,4,0,0,0,3,0,0,0,0,0,1,1,3,3,1,1,1,2},
+    new int[] {4,4,0,0,0,3,3,3,3,0,1,1,3,3,1,1,1,1,2},
+    new int[] {4,4,4,0,0,0,3,3,3,3,0,1,3,1,1,1,1,1,1},
+    new int[] {4,4,0,0,0,0,0,0,0,3,3,1,1,1,1,1,1,1,2},
+    new int[] {4,4,4,0,0,0,0,0,0,0,3,3,3,1,1,1,1,1,1},
+    new int[] {4,4,0,0,0,0,0,0,0,0,0,3,1,1,1,1,1,1,2},
+    new int[] {4,4,4,0,4,0,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1,1,2},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,1,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,1,1,1},
+    new int[] {4,4,4,4,4,4,4,0,0,0,0,0,0,0,1,1,1,1,1}
     };
     // Use this for initialization
     void Start () {
@@ -97,11 +103,47 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButton("Turret1"))
+        if (Input.GetButtonDown("Turret1"))
         {
-            print("Water");
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                Instantiate(fireTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+            }
         }
-        if (Input.GetKeyDown("right") || Input.GetKeyDown("d"))
+        if (Input.GetButtonDown("Turret2"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                Instantiate(waterTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+            }
+        }
+        if (Input.GetButtonDown("Turret3"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                Instantiate(windTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+            }
+        }
+        if (Input.GetButtonDown("Turret4"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                Instantiate(electricTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+            }
+        }
+        if (Input.GetButtonDown("Turret5"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 3)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+                Instantiate(lightTurret, new Vector2(transform.position.x, transform.position.y + 0.8f), transform.rotation);
+            }
+        }
+        if (Input.GetButtonDown("Right"))
         {
             if (pos.y % 2 == 0)
             {
@@ -123,7 +165,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetKeyDown("left") || Input.GetKeyDown("q") || Input.GetKeyDown("a"))
+        if (Input.GetButtonDown("Left"))
         {
             if (pos.y % 2 == 1)
             {
@@ -145,7 +187,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetKeyDown("up") || Input.GetKeyDown("z") || Input.GetKeyDown("w"))
+        if (Input.GetButtonDown("Up"))
         {
             if (pos.y - 2 >= 0)
             {
@@ -154,7 +196,7 @@ public class PlayerController : MonoBehaviour {
                 displayCase();
             }
         }
-        if (Input.GetKeyDown("down") || Input.GetKeyDown("s"))
+        if (Input.GetButtonDown("Down"))
         {
             if (pos.y + 2 < 51)
             {
