@@ -37,6 +37,7 @@ public class Enemies : MonoBehaviour {
     void Start () {
         this.currentHp = this.maxHp;
         this.position = 0.0f;
+        speed *= 2.0f;
 
         this.stunCd = 0.0f;
         this.stunDuration = 0.0f;
@@ -259,9 +260,16 @@ public class Enemies : MonoBehaviour {
         damaged(dmg * laser_efficiency);
     }
 
+    public void blowAway(float dmg)
+    {
+        damaged(dmg * wind_efficiency);
+    }
+
     void damaged(float dmg)
     {
         currentHp -= dmg;
+        Debug.Log("Ouch! those " + dmg + " points of damage on me, a " + gameObject.name
+            + " really hurt! I only have " + currentHp + " HP left");
         if (currentHp <= 0.0f)
         {
             //TODO : Get the money dropped by the mob
