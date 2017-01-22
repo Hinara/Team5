@@ -21,6 +21,8 @@ public class Enemies : MonoBehaviour {
     public float wind_efficiency;
     [Tooltip("Efficiency of laser damage.")]
     public float laser_efficiency;
+    [Tooltip("Maximal duration of a slow on this enemy")]
+    public float maxSlowDuration;
     [Tooltip("Maximal duration of a stun on this enemy")]
     public float maxStunDuration;
     [Tooltip("Gold Dropped by the ennemy")]
@@ -35,6 +37,7 @@ public class Enemies : MonoBehaviour {
     private float fireDuration;
     private float slowDuration;
     private float stunDuration;
+    private float slowCd;
     private float stunCd;
 
     // Use this for initialization
@@ -43,6 +46,7 @@ public class Enemies : MonoBehaviour {
         this.position = 0.0f;
         speed *= 2.0f;
 
+        this.slowCd = 0.0f;
         this.stunCd = 0.0f;
         this.stunDuration = 0.0f;
         this.fireDuration = 0.0f;
@@ -235,6 +239,18 @@ public class Enemies : MonoBehaviour {
         }
     }
 
+    public void slow(float duration)
+    {
+        if (slowCd <= 0.0f)
+        {
+            if (duration > maxSlowDuration)
+                duration = maxSlowDuration;
+            slowDuration = duration;
+            slowCd = duration * 4;
+            speed /= water_efficiency;
+        }
+    }
+
     public void earthQuake()
     {
         damaged(249.0f);
@@ -250,6 +266,7 @@ public class Enemies : MonoBehaviour {
 
     public void electricityDamage(float dmg)
     {
+        stun(5.0f);
         damaged(dmg * electricity_efficiency);
     }
 
@@ -261,6 +278,12 @@ public class Enemies : MonoBehaviour {
     public void blowAway(float dmg)
     {
         damaged(dmg * wind_efficiency);
+    }
+
+    public void freeze(float dmg)
+    {
+        slow(5.0f);
+        damaged(20.0f);
     }
 
     void damaged(float dmg)
