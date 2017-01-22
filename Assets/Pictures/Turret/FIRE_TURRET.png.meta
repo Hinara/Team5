@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 2cd7d8342d55e99448763557798e7ad4
-timeCreated: 1485043754
+guid: d2f6151feb87fe84aa417fa6f567ab19
+timeCreated: 1485043381
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: WIND_TURRET_0
-    21300002: WIND_TURRET_1
-    21300004: WIND_TURRET_2
-    21300006: WIND_TURRET_3
-    21300008: WIND_TURRET_4
-    21300010: WIND_TURRET_5
+    21300000: FIRE_TURRET_0
+    21300002: FIRE_TURRET_1
+    21300004: FIRE_TURRET_2
+    21300006: FIRE_TURRET_3
+    21300008: FIRE_TURRET_4
+    21300010: FIRE_TURRET_5
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -46,7 +46,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 40
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -72,11 +72,19 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WIND_TURRET_0
+      name: FIRE_TURRET_0
       rect:
         serializedVersion: 2
         x: 0
@@ -89,7 +97,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WIND_TURRET_1
+      name: FIRE_TURRET_1
       rect:
         serializedVersion: 2
         x: 86
@@ -102,7 +110,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WIND_TURRET_2
+      name: FIRE_TURRET_2
       rect:
         serializedVersion: 2
         x: 172
@@ -115,7 +123,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WIND_TURRET_3
+      name: FIRE_TURRET_3
       rect:
         serializedVersion: 2
         x: 258
@@ -128,7 +136,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WIND_TURRET_4
+      name: FIRE_TURRET_4
       rect:
         serializedVersion: 2
         x: 344
@@ -141,7 +149,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: WIND_TURRET_5
+      name: FIRE_TURRET_5
       rect:
         serializedVersion: 2
         x: 430

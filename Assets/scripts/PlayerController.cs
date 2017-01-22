@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameObject waterTurret;
+    public GameObject fireTurret;
+    public GameObject lightTurret;
+    public GameObject electricTurret;
+    public GameObject windTurret;
+
     private Vector2 pos = new Vector2(0, 0);
 
     private Vector2 org;
@@ -97,11 +103,42 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButton("Turret1"))
+        if (Input.GetButtonDown("Turret1"))
         {
-            print("Water");
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 8)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+            }
         }
-        if (Input.GetKeyDown("right") || Input.GetKeyDown("d"))
+        if (Input.GetButtonDown("Turret2"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 8)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+            }
+        }
+        if (Input.GetButtonDown("Turret3"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 8)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+            }
+        }
+        if (Input.GetButtonDown("Turret4"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 8)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+            }
+        }
+        if (Input.GetButtonDown("Turret5"))
+        {
+            if (tab[(int)this.pos.y][(int)this.pos.x] < 8)
+            {
+                tab[(int)this.pos.y][(int)this.pos.x] += 8;
+            }
+        }
+        if (Input.GetButtonDown("Right"))
         {
             if (pos.y % 2 == 0)
             {
@@ -123,7 +160,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetKeyDown("left") || Input.GetKeyDown("q") || Input.GetKeyDown("a"))
+        if (Input.GetButtonDown("Left"))
         {
             if (pos.y % 2 == 1)
             {
@@ -145,7 +182,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetKeyDown("up") || Input.GetKeyDown("z") || Input.GetKeyDown("w"))
+        if (Input.GetButtonDown("Up"))
         {
             if (pos.y - 2 >= 0)
             {
@@ -154,7 +191,7 @@ public class PlayerController : MonoBehaviour {
                 displayCase();
             }
         }
-        if (Input.GetKeyDown("down") || Input.GetKeyDown("s"))
+        if (Input.GetButtonDown("Down"))
         {
             if (pos.y + 2 < 51)
             {
