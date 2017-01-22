@@ -227,7 +227,7 @@ public class Enemies : MonoBehaviour {
         else
         {
             player.takeDamage(this.dmg);
-            Destroy(this.gameObject);
+            myDestroy();
             return ;
         }
         transform.position = new Vector2(x, y);
@@ -277,16 +277,20 @@ public class Enemies : MonoBehaviour {
         currentHp -= dmg;
         if (currentHp <= 0.0f)
         {
-            Destroy(this.gameObject);
-            if (player != null)
+            myDestroy();
+        }
+    }
+
+    void myDestroy()
+    {
+        Destroy(this.gameObject);
+        if (player != null)
+        {
+            player.addMoney(this.goldDropped);
+            if (spawn != null && spawn.hasFinish() && GameObject.FindGameObjectsWithTag("Enemies").Length == 1)
             {
-                player.addMoney(this.goldDropped);
-                if (spawn != null && spawn.hasFinish() && GameObject.FindGameObjectsWithTag("Enemies").Length == 1)
-                {
-                    player.win();
-                }
+                player.win();
             }
-            
         }
     }
 }

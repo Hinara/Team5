@@ -220,7 +220,7 @@ public class PlayerController : MonoBehaviour {
         hp -= dmg;
         if (hp <= 0.0f)
         {
-            SceneManager.LoadScene("win");
+            SceneManager.LoadScene("lose");
         }
         if (life != null)
         {
