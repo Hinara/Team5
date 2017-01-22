@@ -26,6 +26,10 @@ public class Enemies : MonoBehaviour {
     [Tooltip("Gold Dropped by the ennemy")]
     public float goldDropped;
 
+    [Tooltip("Spawn Rate of this ennemie")]
+    public float spawnRate;
+
+
     private float currentHp;
     private float position;
     private float fireDuration;
@@ -88,7 +92,7 @@ public class Enemies : MonoBehaviour {
 
     void updatePosition()
     {
-        float pos = this.position / 1000.0f;
+        float pos = this.position / 4000.0f;
         float x;
         float y;
         x = 0.0f;
@@ -213,15 +217,9 @@ public class Enemies : MonoBehaviour {
             x = 18.13f + 1.35f * (pos - 45.0f);
             y = -0.36f + 0.5f * (pos - 45.0f);
         }
-        else if (pos <= 49.0f)
-        {
-            x = 22.18f;
-            y = 1.14f + 1.0f * (pos - 48.0f);
-        }
         else
         {
-            x = 22.18f + 1.35f * (pos - 49.0f);
-            y = 2.14f + 0.5f * (pos - 49.0f);
+            //DAMAGE TO THE CASTLE
         }
         transform.position = new Vector2(x, y);
     }
