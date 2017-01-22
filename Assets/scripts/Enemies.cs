@@ -36,6 +36,8 @@ public class Enemies : MonoBehaviour {
     private float slowDuration;
     private float stunDuration;
     private float stunCd;
+    Spawner spawn;
+    PlayerController player;
 
     // Use this for initialization
     void Start () {
@@ -47,7 +49,9 @@ public class Enemies : MonoBehaviour {
         this.stunDuration = 0.0f;
         this.fireDuration = 0.0f;
         this.slowDuration = 0.0f;
-	}
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        spawn = GameObject.FindWithTag("Respawn").GetComponent<Spawner>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -222,7 +226,9 @@ public class Enemies : MonoBehaviour {
         }
         else
         {
-            //DAMAGE TO THE CASTLE
+            player.takeDamage(this.dmg);
+            Destroy(this.gameObject);
+            return ;
         }
         transform.position = new Vector2(x, y);
     }
@@ -269,12 +275,18 @@ public class Enemies : MonoBehaviour {
     void damaged(float dmg)
     {
         currentHp -= dmg;
-        Debug.Log("Ouch! those " + dmg + " points of damage on me, a " + gameObject.name
-            + " really hurt! I only have " + currentHp + " HP left");
         if (currentHp <= 0.0f)
         {
-            //TODO : Get the money dropped by the mob
             Destroy(this.gameObject);
+            if (player != null)
+            {
+                player.addMoney(this.goldDropped);
+                if (spawn != null && spawn.hasFinish() && GameObject.FindGameObjectsWithTag("Enemies").Length == 1)
+                {
+                    player.win();
+                }
+            }
+            
         }
     }
 }

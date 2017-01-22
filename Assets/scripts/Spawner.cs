@@ -79,4 +79,9 @@ public class Spawner : MonoBehaviour {
             }
         }
 	}
+
+    public bool hasFinish()
+    {
+        return (wave >= nbOfMobByWave.Length);
+    }
 }

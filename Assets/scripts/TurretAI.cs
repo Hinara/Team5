@@ -81,16 +81,10 @@ public class TurretAI : MonoBehaviour {
 
         if (barrelHeat <= 0)
         {
-            Debug.Log("Attack on "+ target.name + "!");
             dir = target.gameObject.transform.position - gameObject.transform.position;
             dir.Normalize();
             Bullet bulletClone = Instantiate(bullet, transform.position, transform.rotation) as Bullet;
             bulletClone.target = target;
-            /*if ((data = bulletClone.GetComponent<Bullet>()) != null)
-            {
-                data.target = target;
-                data.speed = bulletSpeed;
-            }*/
             barrelHeat = shootCD;
             
         }

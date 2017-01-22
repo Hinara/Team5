@@ -10,7 +10,6 @@ public class Bullet : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Debug.Log("Hello! i'm a bullet");
 	}
 	
 	// Update is called once per frame
@@ -29,7 +28,6 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Somethings gon' go wrong!");
         if (col.isTrigger == true)
         {
             if (col.GetComponent<Enemies>() != null)
