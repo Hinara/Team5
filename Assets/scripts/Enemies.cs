@@ -81,7 +81,9 @@ public class Enemies : MonoBehaviour {
 
         //This part prohibit the spam of the stun
         if (stunCd > 0.0f)
+        {
             stunCd -= Time.deltaTime;
+        }
 
         //This part is the damage by fire part of the enemies
         if (fireDuration > 0.0f)
@@ -224,6 +226,7 @@ public class Enemies : MonoBehaviour {
         }
         transform.position = new Vector2(x, y);
     }
+
     public void stun(float duration)
     {
         if (stunCd <= 0.0f)
@@ -258,7 +261,7 @@ public class Enemies : MonoBehaviour {
         damaged(dmg * laser_efficiency);
     }
 
-    public void blowAway(float dmg)
+    public void airSlice(float dmg)
     {
         damaged(dmg * wind_efficiency);
     }
