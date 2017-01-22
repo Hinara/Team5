@@ -7,7 +7,7 @@ public class TurretAI : MonoBehaviour {
     protected Enemies target = null;
     protected Animator anim;
     public float shootCD;
-    public float barrelHeat;
+    protected float barrelHeat;
     //public float bulletSpeed;
     public Bullet bullet;
 
@@ -78,22 +78,13 @@ public class TurretAI : MonoBehaviour {
     void Attack()
     {
         Vector2 dir;
-        Transform ex;
-        Bullet data;
 
         if (barrelHeat <= 0)
         {
-            Debug.Log("Attack on "+ target.name + "!");
             dir = target.gameObject.transform.position - gameObject.transform.position;
             dir.Normalize();
-            int idx = (int)((Vector2.Angle(Vector2.right, dir) - 30.0f) / 60.0f);
             Bullet bulletClone = Instantiate(bullet, transform.position, transform.rotation) as Bullet;
             bulletClone.target = target;
-            /*if ((data = bulletClone.GetComponent<Bullet>()) != null)
-            {
-                data.target = target;
-                data.speed = bulletSpeed;
-            }*/
             barrelHeat = shootCD;
             
         }

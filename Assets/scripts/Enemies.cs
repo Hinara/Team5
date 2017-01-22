@@ -39,6 +39,8 @@ public class Enemies : MonoBehaviour {
     private float stunDuration;
     private float slowCd;
     private float stunCd;
+    Spawner spawn;
+    PlayerController player;
 
     // Use this for initialization
     void Start () {
@@ -51,7 +53,9 @@ public class Enemies : MonoBehaviour {
         this.stunDuration = 0.0f;
         this.fireDuration = 0.0f;
         this.slowDuration = 0.0f;
-	}
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        spawn = GameObject.FindWithTag("Respawn").GetComponent<Spawner>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -85,7 +89,9 @@ public class Enemies : MonoBehaviour {
 
         //This part prohibit the spam of the stun
         if (stunCd > 0.0f)
+        {
             stunCd -= Time.deltaTime;
+        }
 
         //This part is the damage by fire part of the enemies
         if (fireDuration > 0.0f)
@@ -224,10 +230,13 @@ public class Enemies : MonoBehaviour {
         }
         else
         {
-            //DAMAGE TO THE CASTLE
+            player.takeDamage(this.dmg);
+            myDestroy();
+            return ;
         }
         transform.position = new Vector2(x, y);
     }
+
     public void stun(float duration)
     {
         if (stunCd <= 0.0f)
@@ -275,7 +284,7 @@ public class Enemies : MonoBehaviour {
         damaged(dmg * laser_efficiency);
     }
 
-    public void blowAway(float dmg)
+    public void airSlice(float dmg)
     {
         damaged(dmg * wind_efficiency);
     }
@@ -289,12 +298,22 @@ public class Enemies : MonoBehaviour {
     void damaged(float dmg)
     {
         currentHp -= dmg;
-        Debug.Log("Ouch! those " + dmg + " points of damage on me, a " + gameObject.name
-            + " really hurt! I only have " + currentHp + " HP left");
         if (currentHp <= 0.0f)
         {
-            //TODO : Get the money dropped by the mob
-            Destroy(this.gameObject);
+            myDestroy();
+        }
+    }
+
+    void myDestroy()
+    {
+        Destroy(this.gameObject);
+        if (player != null)
+        {
+            player.addMoney(this.goldDropped);
+            if (spawn != null && spawn.hasFinish() && GameObject.FindGameObjectsWithTag("Enemies").Length == 1)
+            {
+                player.win();
+            }
         }
     }
 }

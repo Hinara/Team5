@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject electricTurret;
     public GameObject windTurret;
 
-    public Text life;
+    public Slider life;
     public Text money;
 
     public float gold = 100;
@@ -207,12 +208,23 @@ public class PlayerController : MonoBehaviour {
             money.text = gold + "$";
         }
     }
-
-    public void updateLifeUI()
+    
+    public void win()
     {
+        print("win");
+        SceneManager.LoadScene("win");
+    }
+
+    public void takeDamage(float dmg)
+    {
+        hp -= dmg;
+        if (hp <= 0.0f)
+        {
+            SceneManager.LoadScene("lose");
+        }
         if (life != null)
         {
-            life.text = hp + "/" + maxHp;
+            life.value = hp / maxHp;
         }
     }
 }
