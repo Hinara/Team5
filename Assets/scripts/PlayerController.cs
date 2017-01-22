@@ -7,11 +7,6 @@ public class PlayerController : MonoBehaviour {
     private Vector2 pos = new Vector2(0, 0);
 
     private Vector2 org;
-    private bool keyUp = false;
-    private bool keyLeft = false;
-    private bool keyRight = false;
-    private bool keyDown = false;
-
 
     protected int[][] tab = new int[52][] { 
     new int[19] {0,0,0,0,0,0,0,0,2,2,2,2,2,2,4,4,4,4,4},
@@ -102,99 +97,71 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetAxis("Horizontal") >= 0.1f)
+        if (Input.GetButton("Turret1"))
         {
-            if (!keyRight)
+            print("Water");
+        }
+        if (Input.GetKeyDown("right") || Input.GetKeyDown("d"))
+        {
+            if (pos.y % 2 == 0)
             {
-                keyRight = true;
-                if (pos.y % 2 == 0)
+                if (pos.y + 1 < 51)
                 {
-                    if (pos.y + 1 < 51)
-                    {
-                        pos.y += 1;
-                        transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y - 0.5f);
-                        displayCase();
-                    }
-                }
-                else
-                {
-                    if (pos.y - 1 >= 0 && pos.x + 1 < 19)
-                    {
-                        pos.y -= 1;
-                        pos.x += 1;
-                        transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y + 0.5f);
-                        displayCase();
-                    }
+                    pos.y += 1;
+                    transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y - 0.5f);
+                    displayCase();
                 }
             }
-        }
-        else
-        {
-            keyRight = false;
-        }
-        if (Input.GetAxis("Horizontal") <= -0.1f)
-        {
-            if (!keyLeft)
+            else
             {
-                keyLeft = true;
-                if (pos.y % 2 == 1)
+                if (pos.y - 1 >= 0 && pos.x + 1 < 19)
                 {
-                    if (pos.y - 1 >= 0)
-                    {
-                        pos.y -= 1;
-                        transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y + 0.5f);
-                        displayCase();
-                    }
-                }
-                else
-                {
-                    if (pos.y + 1 < 51 && pos.x - 1 >= 0.0f)
-                    {
-                        pos.y += 1;
-                        pos.x -= 1;
-                        transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y - 0.5f);
-                        displayCase();
-                    }
-                }
-            }
-        }
-        else
-        {
-            keyLeft = false;
-        }
-        if (Input.GetAxis("Vertical") >= 0.1f)
-        {
-            if (!keyUp)
-            {
-                keyUp = true;
-                if (pos.y - 2 >= 0)
-                {
-                    pos.y -= 2;
-                    transform.position = new Vector2(transform.position.x, transform.position.y + 1.0f);
+                    pos.y -= 1;
+                    pos.x += 1;
+                    transform.position = new Vector2(transform.position.x + 1.35f, transform.position.y + 0.5f);
                     displayCase();
                 }
             }
         }
-        else
+        if (Input.GetKeyDown("left") || Input.GetKeyDown("q") || Input.GetKeyDown("a"))
         {
-            keyUp = false;
-        }
-        if (Input.GetAxis("Vertical") <= -0.1f)
-        {
-            if (!keyDown)
+            if (pos.y % 2 == 1)
             {
-                keyDown = true;
-                if (pos.y + 2 < 51)
+                if (pos.y - 1 >= 0)
                 {
-                    pos.y += 2;
-                    transform.position = new Vector2(transform.position.x, transform.position.y - 1.0f);
+                    pos.y -= 1;
+                    transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y + 0.5f);
+                    displayCase();
+                }
+            }
+            else
+            {
+                if (pos.y + 1 < 51 && pos.x - 1 >= 0.0f)
+                {
+                    pos.y += 1;
+                    pos.x -= 1;
+                    transform.position = new Vector2(transform.position.x - 1.35f, transform.position.y - 0.5f);
                     displayCase();
                 }
             }
         }
-        else
+        if (Input.GetKeyDown("up") || Input.GetKeyDown("z") || Input.GetKeyDown("w"))
         {
-            keyDown = false;
+            if (pos.y - 2 >= 0)
+            {
+                pos.y -= 2;
+                transform.position = new Vector2(transform.position.x, transform.position.y + 1.0f);
+                displayCase();
+            }
+        }
+        if (Input.GetKeyDown("down") || Input.GetKeyDown("s"))
+        {
+            if (pos.y + 2 < 51)
+            {
+                pos.y += 2;
+                transform.position = new Vector2(transform.position.x, transform.position.y - 1.0f);
+                displayCase();
+            }
         }
     }
 }
